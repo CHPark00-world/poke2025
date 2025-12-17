@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Shadows+Into+Light+Two&display=swap");
 
-.Signup {
+.signup {
   font-family: "Nanum Myeongjo", serif;
   display: flex;
   align-items: center;
@@ -21,11 +21,7 @@
   height: auto;
 }
 
-.checkbox-label {
-  display: block;
-}
-
-.login-link {
+.login_link {
   margin-top: 10px;
   text-align: right;
 }
@@ -52,6 +48,6 @@
   width: 100%;
 }
 
-.login-link a:hover {
+.login_link a:hover {
   color: #333;
 }

@@ -1,4 +1,4 @@
-.PokeCard {
+.pokecard {
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -61,12 +61,12 @@
   gap: 10px;
 }
 
-.type-info {
+.type_info {
   display: flex;
   gap: 5px;
 }
 
-.type-info span {
+.type_info span {
   padding: 5px 15px;
   border-radius: 20px;
   background-color: #f0f0f0;

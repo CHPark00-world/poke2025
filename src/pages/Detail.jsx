@@ -10,7 +10,7 @@ const Detail = () => {
   if (!pokemon) return <div>로딩중 ...</div>;
 
   return (
-    <div className="Detail">
+    <div className="detail">
       <PokeCard pokemon={pokemon} />
     </div>
   );

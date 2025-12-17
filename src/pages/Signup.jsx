@@ -20,11 +20,11 @@ const Signup = () => {
 
   return (
     <>
-      <div className="Signup">
+      <div className="signup">
         <form className="signup_form" onSubmit={handleSubmit(onSubmit)}>
           <h2>Let's Sign Up! </h2>
           <p className="subtitle">새로운 계정을 만들어보세요</p>
-          <div className="form-control">
+          <div className="form_control">
             <label htmlFor="username">Username</label>
             <input
               type="text"
@@ -38,7 +38,7 @@ const Signup = () => {
               </small>
             )}
           </div>
-          <div className="form-control">
+          <div className="form_control">
             <label htmlFor="email">Email</label>
             <input
               type="text"
@@ -52,7 +52,7 @@ const Signup = () => {
               </small>
             )}
           </div>
-          <div className="form-control">
+          <div className="form_control">
             <label htmlFor="password">Password</label>
             <input
               type="password"
@@ -66,7 +66,7 @@ const Signup = () => {
               </small>
             )}
           </div>
-          <div className="form-control">
+          <div className="form_control">
             <label htmlFor="password2">Confirm Password</label>
             <input
               type="password"
@@ -87,7 +87,7 @@ const Signup = () => {
               <span>이용약관 및 개인정보처리방침에 동의합니다</span>
             </label>
           </div>
-          <p className="login-link">
+          <p className="login_link">
             이미 계정이 있으신가요? <Link to={ROUTE.LOGIN}>로그인</Link>
           </p>
         </form>

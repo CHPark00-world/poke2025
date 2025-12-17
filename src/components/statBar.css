@@ -1,21 +1,21 @@
-.statBar {
+.statbar {
   display: flex;
   align-items: center;
   margin-bottom: 8px;
 }
 
-.stat-name {
+.stat_name {
   width: 80px;
   font-size: 14px;
 }
 
-.stat-value {
+.stat_value {
   width: 40px;
   font-weight: bold;
   margin-right: 10px;
 }
 
-.bar-background {
+.bar_background {
   flex: 1;
   height: 8px;
   background-color: #e0e0e0;
@@ -23,7 +23,7 @@
   overflow: hidden;
 }
 
-.bar-fill {
+.bar_fill {
   height: 100%;
   background-color: #fbbf24;
   transition: width 0.3s ease;

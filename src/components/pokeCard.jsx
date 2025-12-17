@@ -3,23 +3,24 @@ import { useNavigate } from "react-router-dom";
 import TYPE from "../constants/type";
 import STAT from "../constants/stat";
 import StatBar from "./statBar";
+import ROUTE from "../constants/route";
 
-const PokeItem = ({ pokemon }) => {
+const PokeCard = ({ pokemon }) => {
   const navigate = useNavigate();
-  const stats = pokemon.stats;
+  const stats = pokemon.stats || [];
 
   const handleClick = () => {
     if (!pokemon.url) return;
     const id = pokemon.url.split("/")[6];
-    navigate(`/detail/${id}`);
+    navigate(ROUTE.DETAIL(id));
   };
 
   return (
     <div className="detail_container">
-      <button onClick={() => navigate("/home")} className="back_btn">
+      <button onClick={() => navigate(ROUTE.HOME)} className="back_btn">
         ← 뒤로가기
       </button>
-      <div onClick={handleClick} className="PokeCard">
+      <div onClick={handleClick} className="pokecard">
         <div className="info_section">
           <div className="top_row">
             <div className="image_section">
@@ -27,9 +28,9 @@ const PokeItem = ({ pokemon }) => {
               <span>#{pokemon.pokemonId}</span>
             </div>
             <div className="name_section">
-              <h1 className="korean-name">{pokemon.koreanName}</h1>
-              <h4 className="english-name">{pokemon.englishName}</h4>
-              <div className="type-info">
+              <h1 className="korean_name">{pokemon.koreanName}</h1>
+              <h4 className="english_name">{pokemon.englishName}</h4>
+              <div className="type_info">
                 {pokemon.types?.map((types, index) => (
                   <span key={index}>{TYPE[types.type.name]}</span>
                 ))}
@@ -57,4 +58,4 @@ const PokeItem = ({ pokemon }) => {
   );
 };
 
-export default PokeItem;
+export default PokeCard;

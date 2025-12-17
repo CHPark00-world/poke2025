@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Shadows+Into+Light+Two&display=swap");
 
-.Login {
+.login {
   font-family: "Nanum Myeongjo", serif;
   display: flex;
   align-items: center;
@@ -25,19 +25,19 @@ h2 {
   margin: 0 0 20px;
 }
 
-.form-control {
+.form_control {
   padding-bottom: 20px;
   margin-bottom: 10px;
   position: relative;
 }
 
-.form-control label {
+.form_control label {
   color: #777;
   display: block;
   margin-bottom: 5px;
 }
 
-.form-control input {
+.form_control input {
   border: 2px solid #f0f0f0;
   display: block;
   width: 100%;
@@ -46,12 +46,12 @@ h2 {
   font-size: 14px;
 }
 
-.form-control input:focus {
+.form_control input:focus {
   outline: 0;
   border-color: #777;
 }
 
-.form-control small {
+.form_control small {
   color: #e74c3c;
   position: absolute;
   bottom: 0;

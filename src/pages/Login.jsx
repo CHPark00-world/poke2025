@@ -20,10 +20,10 @@ const Login = () => {
 
   return (
     <>
-      <div className="Login">
+      <div className="login">
         <form className="login_form" onSubmit={handleSubmit(onSubmit)}>
           <h2>Welcome back!</h2>
-          <div className="form-control">
+          <div className="form_control">
             <label htmlFor="email">Email</label>
             <input
               type="text"
@@ -37,7 +37,7 @@ const Login = () => {
               </small>
             )}
           </div>
-          <div className="form-control">
+          <div className="form_control">
             <label htmlFor="password">Password</label>
             <input
               type="password"

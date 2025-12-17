@@ -3,7 +3,7 @@ const ROUTE = {
   LOGIN: "/login",
   SIGNUP: "/signup",
   HOME: "/home",
-  DETAIL: "/detail/:id",
+  DETAIL: (id = ":id") => `/detail/${id}`,
 };
 
 export default ROUTE;

@@ -16,7 +16,7 @@ function App() {
           <Route path={ROUTE.LOGIN} element={<Login />} />
           <Route path={ROUTE.SIGNUP} element={<Signup />} />
           <Route path={ROUTE.HOME} element={<Home />} />
-          <Route path={ROUTE.DETAIL} element={<Detail />} />
+          <Route path={ROUTE.DETAIL()} element={<Detail />} />
         </Routes>
       </BrowserRouter>
     </>

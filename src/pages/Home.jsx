@@ -45,7 +45,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="Home">
+    <div className="home">
       <PokeList pokemons={pokemons} />
     </div>
   );

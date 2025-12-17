@@ -6,11 +6,11 @@ const StatBar = ({ statName, statValue, maxValue = 255 }) => {
   const koreanName = STAT[statName];
 
   return (
-    <div className="statBar">
-      <span className="stat-name">{koreanName}</span>
-      <span className="stat-value">{statValue}</span>
-      <div className="bar-background">
-        <div className="bar-fill" style={{ width: `${percentage}%` }} />
+    <div className="statbar">
+      <span className="stat_name">{koreanName}</span>
+      <span className="stat_value">{statValue}</span>
+      <div className="bar_background">
+        <div className="bar_fill" style={{ width: `${percentage}%` }} />
       </div>
     </div>
   );
