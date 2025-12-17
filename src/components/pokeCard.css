@@ -1,0 +1,113 @@
+.pokecard {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  gap: 20px;
+}
+
+.detail_container {
+  position: relative;
+}
+
+.back_btn {
+  position: absolute;
+  top: -60px;
+  background-color: lightblue;
+  opacity: 0.7;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 15px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+}
+
+.back_btn:hover {
+  background-color: #f0f0f0;
+}
+
+.image_section img {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  background-color: #ffd966;
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.info_section {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  flex-direction: column;
+}
+
+.image_section {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.name_section {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.type_info {
+  display: flex;
+  gap: 5px;
+}
+
+.type_info span {
+  padding: 5px 15px;
+  border-radius: 20px;
+  background-color: #f0f0f0;
+  font-size: 14px;
+}
+
+.description {
+  width: 100%;
+}
+
+.size_section {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+}
+
+.top_row {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.name_section > h4 {
+  opacity: 0.4;
+}
+
+.ability_section > h3 {
+  margin-bottom: 20px;
+  border-left: 4px solid #8b5cf6;
+  padding-left: 10px;
+}
+
+.image_section > span {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  background-color: #8b5cf6;
+
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+}
