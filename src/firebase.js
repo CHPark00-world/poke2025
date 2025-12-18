@@ -2,13 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD_EfunyP6uk2dcK_CYF-4_VzkatvjOIQI",
-  authDomain: "pokedex-1363b.firebaseapp.com",
-  projectId: "pokedex-1363b",
-  storageBucket: "pokedex-1363b.firebasestorage.app",
-  messagingSenderId: "1059407913814",
-  appId: "1:1059407913814:web:69afc54e859de8526b6cf7",
-  measurementId: "G-K3LVXVQHFG",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
