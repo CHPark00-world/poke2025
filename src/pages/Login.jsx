@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import loginSchema from "../schemas/loginSchema.js";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const {
@@ -14,8 +15,20 @@ const Login = () => {
     resolver: zodResolver(loginSchema),
   });
 
+  const navigate = useNavigate();
+
   const onSubmit = (data) => {
-    console.log("로그인 성공!", data);
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
+    const user = users.find(
+      (u) => u.email === data.email && u.password === data.password
+    );
+
+    if (user) {
+      navigate(ROUTE.HOME);
+    } else {
+      alert("일치하지 않은 회원입니다.");
+    }
   };
 
   return (

@@ -1,11 +1,13 @@
 import "./Signup.css";
 import ROUTE from "../constants/route";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import signupSchema from "../schemas/signupSchema";
 
 const Signup = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -15,7 +17,26 @@ const Signup = () => {
   });
 
   const onSubmit = (data) => {
-    console.log("회원가입 성공!", data);
+    const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+
+    const isDuplicate = existingUsers.find((u) => u.email === data.email);
+
+    if (isDuplicate) {
+      alert("이미 가입된 이메일입니다.");
+      return;
+    }
+
+    const newUser = {
+      username: data.username,
+      email: data.email,
+      password: data.password,
+    };
+
+    existingUsers.push(newUser);
+    localStorage.setItem("users", JSON.stringify(existingUsers));
+
+    alert("회원가입 성공!");
+    navigate(ROUTE.LOGIN);
   };
 
   return (
