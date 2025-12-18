@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import loginSchema from "../schemas/loginSchema.js";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase.js";
 
 const Login = () => {
   const {
@@ -17,16 +19,11 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-
-    const user = users.find(
-      (u) => u.email === data.email && u.password === data.password
-    );
-
-    if (user) {
+  const onSubmit = async (data) => {
+    try {
+      await signInWithEmailAndPassword(auth, data.email, data.password);
       navigate(ROUTE.HOME);
-    } else {
+    } catch (error) {
       alert("일치하지 않은 회원입니다.");
     }
   };

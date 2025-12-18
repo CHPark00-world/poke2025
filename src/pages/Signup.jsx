@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import signupSchema from "../schemas/signupSchema";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase.js";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -16,27 +18,18 @@ const Signup = () => {
     resolver: zodResolver(signupSchema),
   });
 
-  const onSubmit = (data) => {
-    const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
-
-    const isDuplicate = existingUsers.find((u) => u.email === data.email);
-
-    if (isDuplicate) {
-      alert("이미 가입된 이메일입니다.");
-      return;
+  const onSubmit = async (data) => {
+    try {
+      await createUserWithEmailAndPassword(auth, data.email, data.password);
+      alert("회원가입 성공!");
+      navigate(ROUTE.LOGIN);
+    } catch (error) {
+      if (error.code === "auth/email-already-in-use") {
+        alert("이미 가입된 이메일입니다.");
+      } else {
+        alert("회원가입 실패: " + error.message);
+      }
     }
-
-    const newUser = {
-      username: data.username,
-      email: data.email,
-      password: data.password,
-    };
-
-    existingUsers.push(newUser);
-    localStorage.setItem("users", JSON.stringify(existingUsers));
-
-    alert("회원가입 성공!");
-    navigate(ROUTE.LOGIN);
   };
 
   return (
