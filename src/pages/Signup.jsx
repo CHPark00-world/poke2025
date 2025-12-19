@@ -1,11 +1,15 @@
 import "./Signup.css";
 import ROUTE from "../constants/route";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import signupSchema from "../schemas/signupSchema";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase.js";
 
 const Signup = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -14,8 +18,32 @@ const Signup = () => {
     resolver: zodResolver(signupSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log("회원가입 성공!", data);
+  const onSubmit = async (data) => {
+    try {
+      await createUserWithEmailAndPassword(auth, data.email, data.password);
+      alert("회원가입 성공!");
+      navigate(ROUTE.LOGIN);
+    } catch (error) {
+      switch (error.code) {
+        case "auth/email-already-in-use":
+          alert("이미 사용 중인 이메일입니다.");
+          break;
+        case "auth/weak-password":
+          alert("비밀번호는 6글자 이상이어야 합니다.");
+          break;
+        case "auth/network-request-failed":
+          alert("네크워크 연결에 실패 하였습니다.");
+          break;
+        case "auth/invalid-email":
+          alert("잘못된 이메일 형식입니다.");
+          break;
+        case "auth/internal-error":
+          alert("잘못된 요청입니다.");
+          break;
+        default:
+          alert("회원가입에 실패 하였습니다.");
+      }
+    }
   };
 
   return (
