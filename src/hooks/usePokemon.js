@@ -1,19 +1,17 @@
 import { useEffect, useState } from "react";
 
+const base_url = import.meta.env.VITE_API_BASE_URL;
+
 const usePokemon = (id) => {
   const [pokemon, setPokemon] = useState();
 
   useEffect(() => {
     const getPokemonDetail = async () => {
       try {
-        const detailRes = await fetch(
-          `https://pokeapi.co/api/v2/pokemon/${id}`
-        );
+        const detailRes = await fetch(`${base_url}/pokemon/${id}`);
         const detailData = await detailRes.json();
 
-        const speciesRes = await fetch(
-          `https://pokeapi.co/api/v2/pokemon-species/${id}`
-        );
+        const speciesRes = await fetch(`${base_url}/pokemon-species/${id}`);
         const speciesData = await speciesRes.json();
 
         const koreanName = speciesData.names[2].name;
