@@ -5,3 +5,8 @@
   justify-content: center;
   align-items: center;
 }
+
+.detail button {
+  position: relative;
+  top: -20px;
+}

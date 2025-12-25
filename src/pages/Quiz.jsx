@@ -1,12 +1,19 @@
 import "./Quiz.css";
 import { useEffect, useState } from "react";
 import usePokemonList from "../hooks/usePokemonList.js";
+import { useNavigate } from "react-router-dom";
+import ROUTE from "../constants/route.js";
+
+const shuffleArray = (array) => {
+  return [...array].sort(() => Math.random() - 0.5);
+};
 
 const Quiz = () => {
   const { pokemons } = usePokemonList();
   const [currentPokemon, setCurrentPokemon] = useState(null);
   const [options, setOptions] = useState([]);
   const [result, setResult] = useState(null);
+  const navigate = useNavigate();
 
   const newQuiz = () => {
     if (pokemons.length > 0) {
@@ -19,7 +26,8 @@ const Quiz = () => {
       const wrong3 = pokemons[Math.floor(Math.random() * pokemons.length)];
 
       const all = [answer, wrong1, wrong2, wrong3];
-      const shuffled = all.sort(() => Math.random() - 0.5);
+      // ✅ shuffleArray 함수 사용!
+      const shuffled = shuffleArray(all);
       setOptions(shuffled);
     }
   };
@@ -40,6 +48,9 @@ const Quiz = () => {
 
   return (
     <div className="Quiz">
+      <button onClick={() => navigate(ROUTE.HOME)} className="back_btn">
+        뒤로가기
+      </button>
       <h2>다음 포켓몬의 이름을 맞춰주세요 !</h2>
       {currentPokemon ? (
         <>

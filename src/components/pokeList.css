@@ -56,3 +56,10 @@
   border-color: #ff4444;
   font-weight: 600;
 }
+
+.load_more {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-size: 14px;
+}

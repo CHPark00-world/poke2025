@@ -11,7 +11,7 @@ const Home = () => {
   const [filteredPokemons, setFilteredPokemons] = useState([]);
   const navigate = useNavigate();
 
-  const { pokemons } = usePokemonList();
+  const { pokemons, loading } = usePokemonList();
 
   const handleSearch = (text) => {
     const filtered = pokemons.filter((item) => item.koreanName.includes(text));
@@ -28,15 +28,17 @@ const Home = () => {
     setFilteredPokemons(sorted);
   };
 
+  if (loading) return <div>로딩중...</div>;
+
   return (
     <div className="home">
       <Header onSearch={handleSearch} onSort={handleSort} />
-      {
-        <button className="quiz_btn" onClick={() => navigate(ROUTE.QUIZ)}>
-          퀴즈 풀기
-        </button>
-      }
-      <PokeList pokemons={filteredPokemons} />
+      <button className="quiz_btn" onClick={() => navigate(ROUTE.QUIZ)}>
+        퀴즈 풀기
+      </button>
+      <PokeList
+        pokemons={filteredPokemons.length > 0 ? filteredPokemons : pokemons}
+      />
       <Footer />
     </div>
   );

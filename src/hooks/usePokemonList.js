@@ -1,21 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 
 const usePokemonList = () => {
   const [pokemons, setPokemons] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const getPokemon = async () => {
+    const getPokemons = async () => {
+      setLoading(true);
+
       try {
-        const response = await fetch(`${base_url}/pokemon?limit=255`);
+        const response = await fetch(`${base_url}/pokemon?limit=151`);
         const data = await response.json();
 
-        const pokemonList = [];
-
-        for (let i = 0; i < data.results.length; i++) {
-          const pokemon = data.results[i];
-
+        const promises = data.results.map(async (pokemon) => {
           const id = pokemon.url.split("/")[6];
 
           const speciesResponse = await fetch(
@@ -29,21 +28,27 @@ const usePokemonList = () => {
           const detailImage =
             detailData.sprites.other.dream_world.front_default;
 
-          pokemonList.push({
-            ...pokemon,
+          return {
+            name: pokemon.name,
+            url: pokemon.url,
             koreanName: koreanName,
             detailImage: detailImage,
-          });
-        }
-        setPokemons(pokemonList);
+          };
+        });
+
+        const newPokemons = await Promise.all(promises);
+        setPokemons(newPokemons);
       } catch (error) {
-        console.log("에러는:", error);
+        console.log("에러:", error);
+      } finally {
+        setLoading(false);
       }
     };
-    getPokemon();
+
+    getPokemons();
   }, []);
 
-  return { pokemons };
+  return { pokemons, loading };
 };
 
 export default usePokemonList;
