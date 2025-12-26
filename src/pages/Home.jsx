@@ -1,53 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Home.css";
 import PokeList from "../components/pokeList";
 import Header from "../components/Header";
 import Footer from "../components/footer";
+import usePokemonList from "../hooks/usePokemonList";
+import { useNavigate } from "react-router-dom";
+import ROUTE from "../constants/route";
 
 const Home = () => {
-  const [pokemons, setPokemons] = useState([]);
   const [filteredPokemons, setFilteredPokemons] = useState([]);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const getPokemon = async () => {
-      try {
-        const response = await fetch(
-          "https://pokeapi.co/api/v2/pokemon?limit=255"
-        );
-        const data = await response.json();
-
-        const pokemonList = [];
-
-        for (let i = 0; i < data.results.length; i++) {
-          const pokemon = data.results[i];
-
-          const id = pokemon.url.split("/")[6];
-
-          const speciesResponse = await fetch(
-            `https://pokeapi.co/api/v2/pokemon-species/${id}`
-          );
-          const speciesData = await speciesResponse.json();
-          const koreanName = speciesData.names[2].name;
-
-          const detailResponse = await fetch(pokemon.url);
-          const detailData = await detailResponse.json();
-          const detailImage =
-            detailData.sprites.other.dream_world.front_default;
-
-          pokemonList.push({
-            ...pokemon,
-            koreanName: koreanName,
-            detailImage: detailImage,
-          });
-        }
-        setPokemons(pokemonList);
-        setFilteredPokemons(pokemonList);
-      } catch (error) {
-        console.log("에러는:", error);
-      }
-    };
-    getPokemon();
-  }, []);
+  const { pokemons, loading } = usePokemonList();
 
   const handleSearch = (text) => {
     const filtered = pokemons.filter((item) => item.koreanName.includes(text));
@@ -64,10 +28,17 @@ const Home = () => {
     setFilteredPokemons(sorted);
   };
 
+  if (loading) return <div>로딩중...</div>;
+
   return (
     <div className="home">
       <Header onSearch={handleSearch} onSort={handleSort} />
-      <PokeList pokemons={filteredPokemons} />
+      <button className="quiz_btn" onClick={() => navigate(ROUTE.QUIZ)}>
+        퀴즈 풀기
+      </button>
+      <PokeList
+        pokemons={filteredPokemons.length > 0 ? filteredPokemons : pokemons}
+      />
       <Footer />
     </div>
   );

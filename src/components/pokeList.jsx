@@ -6,9 +6,9 @@ const PokeList = ({ pokemons }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 28;
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentPokemons = pokemons.slice(indexOfFirstItem, indexOfLastItem);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentPokemons = pokemons.slice(startIndex, endIndex);
 
   const totalPages = Math.ceil(pokemons.length / itemsPerPage);
 
@@ -21,9 +21,10 @@ const PokeList = ({ pokemons }) => {
     <div className="pokelist_container">
       <div className="pokelist">
         {currentPokemons.map((item) => (
-          <PokeListItem key={item.name} pokemon={item} />
+          <PokeListItem key={item.url} pokemon={item} />
         ))}
       </div>
+
       <div className="pagination">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
@@ -32,6 +33,7 @@ const PokeList = ({ pokemons }) => {
         >
           이전
         </button>
+
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
           <button
             key={number}

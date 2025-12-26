@@ -1,1 +1,18 @@
+.quiz_btn {
+  background: linear-gradient(to bottom, #ff0000 50%, #ffffff 50%);
+  padding: 30px 30px;
+  font-weight: bold;
+  border: 4px solid #333;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  margin: 20px auto;
+  display: block;
+}
 
+.quiz_btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}

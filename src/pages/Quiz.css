@@ -1,0 +1,123 @@
+.Quiz {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.back_btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.back_btn:hover {
+  background-color: #d0d0d0;
+  transform: translateY(-2px);
+}
+
+.Quiz h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.Quiz img {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  margin: 20px auto;
+  background-color: #f5f5f5;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.Quiz > div {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin: 30px 0;
+}
+
+.Quiz > div button {
+  padding: 15px 25px;
+  background-color: #fff;
+  border: 2px solid #3b4cca;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #3b4cca;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.Quiz > div button:hover {
+  background-color: #3b4cca;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(59, 76, 202, 0.3);
+}
+
+.Quiz > div button:active {
+  transform: translateY(-1px);
+}
+
+.next_btn {
+  margin-top: 20px;
+  padding: 12px 30px;
+  background-color: #ffcb05;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #3b4cca;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.next_btn:hover {
+  background-color: #ffd93d;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(255, 203, 5, 0.4);
+}
+
+.Quiz p {
+  font-size: 18px;
+  color: #666;
+  margin-top: 50px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .Quiz {
+    padding: 30px 15px;
+  }
+
+  .Quiz h2 {
+    font-size: 20px;
+  }
+
+  .Quiz img {
+    width: 160px;
+    height: 160px;
+  }
+
+  .Quiz > div {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .back_btn {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+}
