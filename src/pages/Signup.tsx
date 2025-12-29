@@ -3,9 +3,9 @@ import ROUTE from "../constants/route";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import signupSchema from "../schemas/signupSchema";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase.js";
+import signupSchema, { SignupFormData } from "../schemas/signupSchema";
+import { createUserWithEmailAndPassword, AuthError } from "firebase/auth";
+import { auth } from "../firebase";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -14,16 +14,17 @@ const Signup = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: SignupFormData) => {
     try {
       await createUserWithEmailAndPassword(auth, data.email, data.password);
       alert("회원가입 성공!");
       navigate(ROUTE.LOGIN);
-    } catch (error) {
+    } catch (err) {
+      const error = err as AuthError;
       switch (error.code) {
         case "auth/email-already-in-use":
           alert("이미 사용 중인 이메일입니다.");
@@ -32,7 +33,7 @@ const Signup = () => {
           alert("비밀번호는 6글자 이상이어야 합니다.");
           break;
         case "auth/network-request-failed":
-          alert("네크워크 연결에 실패 하였습니다.");
+          alert("네트워크 연결에 실패 하였습니다.");
           break;
         case "auth/invalid-email":
           alert("잘못된 이메일 형식입니다.");

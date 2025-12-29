@@ -21,4 +21,6 @@ const signupSchema = z
     path: ["password2"],
   });
 
+export type SignupFormData = z.infer<typeof signupSchema>;
+
 export default signupSchema;

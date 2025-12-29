@@ -1,29 +1,30 @@
 import "./Login.css";
-import ROUTE from "../constants/route.js";
+import ROUTE from "../constants/route";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import loginSchema from "../schemas/loginSchema.js";
+import loginSchema, { LoginFormData } from "../schemas/loginSchema";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase.js";
+import { signInWithEmailAndPassword, AuthError } from "firebase/auth";
+import { auth } from "../firebase";
 
 const Login = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
 
   const navigate = useNavigate();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: LoginFormData) => {
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password);
       navigate(ROUTE.HOME);
-    } catch (error) {
+    } catch (err) {
+      const error = err as AuthError;
       console.log(error.code);
 
       switch (error.code) {
@@ -39,7 +40,7 @@ const Login = () => {
           alert("비밀번호는 6글자 이상이어야 합니다.");
           break;
         case "auth/network-request-failed":
-          alert("네크워크 연결에 실패 하였습니다.");
+          alert("네트워크 연결에 실패 하였습니다.");
           break;
         case "auth/invalid-email":
           alert("잘못된 이메일 형식입니다.");

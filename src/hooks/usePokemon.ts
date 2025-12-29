@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import { PokemonDetail } from "../types/pokemon";
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 
-const usePokemon = (id) => {
-  const [pokemon, setPokemon] = useState();
+const usePokemon = (id: number) => {
+  const [pokemon, setPokemon] = useState<PokemonDetail | undefined>();
 
   useEffect(() => {
     const getPokemonDetail = async () => {
@@ -22,7 +23,7 @@ const usePokemon = (id) => {
         const height = detailData.height / 10;
         const weight = detailData.weight / 10;
         const description = speciesData.flavor_text_entries.find(
-          (entry) => entry.language.name === "ko"
+          (entry: any) => entry.language.name === "ko"
         )?.flavor_text;
         const stats = detailData.stats;
 

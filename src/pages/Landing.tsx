@@ -13,7 +13,10 @@ const Landing = () => {
       <div className="bubble bubble4"></div>
       <div className="bubble bubble5"></div>
       <div className="img_section">
-        <img src="https://cdn.pixabay.com/photo/2023/05/12/10/47/ai-generated-7988263_1280.jpg" />
+        <img
+          src="https://cdn.pixabay.com/photo/2023/05/12/10/47/ai-generated-7988263_1280.jpg"
+          alt="포켓몬"
+        />
       </div>
       <h1>포켓몬 도감</h1>
       <h4>나만의 포켓몬 컬렉션을 완성하세요.</h4>

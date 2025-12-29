@@ -1,9 +1,14 @@
 import { useState } from "react";
 import "./pokeList.css";
-import PokeListItem from "./pokeListItem";
+import PokeListItem from "./pokeListItem.tsx";
+import { PokemonListItem } from "../types/pokemon";
 
-const PokeList = ({ pokemons }) => {
-  const [currentPage, setCurrentPage] = useState(1);
+interface PokeListProps {
+  pokemons: PokemonListItem[];
+}
+
+const PokeList = ({ pokemons }: PokeListProps) => {
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 28;
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -12,7 +17,7 @@ const PokeList = ({ pokemons }) => {
 
   const totalPages = Math.ceil(pokemons.length / itemsPerPage);
 
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };

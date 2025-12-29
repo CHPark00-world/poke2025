@@ -1,29 +1,32 @@
 import { useState } from "react";
 import "./Home.css";
 import PokeList from "../components/pokeList";
-import Header from "../components/Header";
+import Header from "../components/header";
 import Footer from "../components/footer";
 import usePokemonList from "../hooks/usePokemonList";
 import { useNavigate } from "react-router-dom";
 import ROUTE from "../constants/route";
+import { PokemonListItem } from "../types/pokemon";
 
 const Home = () => {
-  const [filteredPokemons, setFilteredPokemons] = useState([]);
+  const [filteredPokemons, setFilteredPokemons] = useState<PokemonListItem[]>(
+    []
+  );
   const navigate = useNavigate();
 
   const { pokemons, loading } = usePokemonList();
 
-  const handleSearch = (text) => {
+  const handleSearch = (text: string) => {
     const filtered = pokemons.filter((item) => item.koreanName.includes(text));
     setFilteredPokemons(filtered);
   };
 
-  const handleSort = (Type) => {
+  const handleSort = (type: string) => {
     const sorted = [...pokemons].sort((a, b) => {
-      if (Type === "name") {
+      if (type === "name") {
         return a.koreanName.localeCompare(b.koreanName);
       }
-      return a.url.split("/")[6] - b.url.split("/")[6];
+      return Number(a.url.split("/")[6]) - Number(b.url.split("/")[6]);
     });
     setFilteredPokemons(sorted);
   };
