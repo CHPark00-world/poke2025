@@ -1,11 +1,15 @@
 import "./pokeCard.css";
 import { useNavigate } from "react-router-dom";
 import TYPE from "../constants/type";
-import STAT from "../constants/stat";
-import StatBar from "./statBar";
+import StatBar from "./statBar.tsx";
 import ROUTE from "../constants/route";
+import { PokemonDetail } from "../types/pokemon";
 
-const PokeCard = ({ pokemon }) => {
+interface PokeCardProps {
+  pokemon: PokemonDetail;
+}
+
+const PokeCard = ({ pokemon }: PokeCardProps) => {
   const navigate = useNavigate();
   const stats = pokemon.stats || [];
 
@@ -24,7 +28,7 @@ const PokeCard = ({ pokemon }) => {
         <div className="info_section">
           <div className="top_row">
             <div className="image_section">
-              <img src={pokemon.detailImage} />
+              <img src={pokemon.detailImage} alt={pokemon.koreanName} />
               <span>#{pokemon.pokemonId}</span>
             </div>
             <div className="name_section">

@@ -6,8 +6,13 @@ import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import ROUTE from "../constants/route";
 
-const Header = ({ onSearch, onSort }) => {
-  const inputRef = useRef();
+interface HeaderProps {
+  onSearch: (value: string) => void;
+  onSort: (value: string) => void;
+}
+
+const Header = ({ onSearch, onSort }: HeaderProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -42,7 +47,7 @@ const Header = ({ onSearch, onSort }) => {
       <div className="header_user">
         {user && (
           <>
-            <span>{user.email.split("@")[0]}님</span>
+            <span>{user.email?.split("@")[0]}님</span>
             <button onClick={handleLogout}>로그아웃</button>
           </>
         )}

@@ -1,8 +1,13 @@
 import "./pokeListItem.css";
 import { useNavigate } from "react-router-dom";
 import ROUTE from "../constants/route";
+import { PokemonListItem as PokemonListItemType } from "../types/pokemon";
 
-function PokeListItem({ pokemon }) {
+interface PokeListItemProps {
+  pokemon: PokemonListItemType;
+}
+
+function PokeListItem({ pokemon }: PokeListItemProps) {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -12,7 +17,11 @@ function PokeListItem({ pokemon }) {
 
   return (
     <div onClick={handleClick} className="pokelistitem">
-      <img src={pokemon.detailImage} style={{ width: "100px" }} />
+      <img
+        src={pokemon.detailImage}
+        alt={pokemon.koreanName}
+        style={{ width: "100px" }}
+      />
       <h3>{pokemon.koreanName}</h3>
     </div>
   );

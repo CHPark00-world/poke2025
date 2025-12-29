@@ -1,4 +1,5 @@
-const TYPE = {
+// constants/type.ts
+const TYPE: { [key: string]: string } = {
   normal: "노말",
   fire: "불꽃",
   water: "물",

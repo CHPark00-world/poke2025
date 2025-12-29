@@ -1,18 +1,21 @@
 import "./Quiz.css";
 import { useEffect, useState } from "react";
-import usePokemonList from "../hooks/usePokemonList.js";
+import usePokemonList from "../hooks/usePokemonList";
 import { useNavigate } from "react-router-dom";
-import ROUTE from "../constants/route.js";
+import ROUTE from "../constants/route";
+import { PokemonListItem } from "../types/pokemon";
 
-const shuffleArray = (array) => {
+const shuffleArray = (array: PokemonListItem[]): PokemonListItem[] => {
   return [...array].sort(() => Math.random() - 0.5);
 };
 
 const Quiz = () => {
   const { pokemons } = usePokemonList();
-  const [currentPokemon, setCurrentPokemon] = useState(null);
-  const [options, setOptions] = useState([]);
-  const [result, setResult] = useState(null);
+  const [currentPokemon, setCurrentPokemon] = useState<PokemonListItem | null>(
+    null
+  );
+  const [options, setOptions] = useState<PokemonListItem[]>([]);
+  const [result, setResult] = useState<boolean | null>(null);
   const navigate = useNavigate();
 
   const newQuiz = () => {
@@ -26,7 +29,6 @@ const Quiz = () => {
       const wrong3 = pokemons[Math.floor(Math.random() * pokemons.length)];
 
       const all = [answer, wrong1, wrong2, wrong3];
-      // ✅ shuffleArray 함수 사용!
       const shuffled = shuffleArray(all);
       setOptions(shuffled);
     }
@@ -34,10 +36,11 @@ const Quiz = () => {
 
   useEffect(() => {
     newQuiz();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pokemons]);
 
-  const handleClick = (pokemon) => {
-    if (pokemon.koreanName === currentPokemon.koreanName) {
+  const handleClick = (pokemon: PokemonListItem) => {
+    if (currentPokemon && pokemon.koreanName === currentPokemon.koreanName) {
       alert("정답!");
       setResult(true);
     } else {

@@ -1,4 +1,5 @@
-const STAT = {
+// constants/stat.ts
+const STAT: { [key: string]: string } = {
   hp: "HP",
   attack: "공격",
   defense: "방어",

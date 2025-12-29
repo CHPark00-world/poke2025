@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
+import { PokemonListItem } from "../types/pokemon";
 
 const base_url = import.meta.env.VITE_API_BASE_URL;
 
 const usePokemonList = () => {
-  const [pokemons, setPokemons] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [pokemons, setPokemons] = useState<PokemonListItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const getPokemons = async () => {
@@ -14,7 +15,7 @@ const usePokemonList = () => {
         const response = await fetch(`${base_url}/pokemon?limit=151`);
         const data = await response.json();
 
-        const promises = data.results.map(async (pokemon) => {
+        const promises = data.results.map(async (pokemon: any) => {
           const id = pokemon.url.split("/")[6];
 
           const speciesResponse = await fetch(

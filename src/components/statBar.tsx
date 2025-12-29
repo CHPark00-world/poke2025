@@ -1,7 +1,13 @@
 import "./statBar.css";
 import STAT from "../constants/stat";
 
-const StatBar = ({ statName, statValue, maxValue = 255 }) => {
+interface StatBarProps {
+  statName: string;
+  statValue: number;
+  maxValue?: number;
+}
+
+const StatBar = ({ statName, statValue, maxValue = 255 }: StatBarProps) => {
   const percentage = (statValue / maxValue) * 100;
   const koreanName = STAT[statName];
 
