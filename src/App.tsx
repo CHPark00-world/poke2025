@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Detail from "./pages/Detail";
 import { AuthProvider } from "./contexts/AuthContexts";
 import Quiz from "./pages/Quiz";
+import { ProtectedRoute } from "./router/ProtectedRoute";
 
 function App() {
   return (
@@ -18,9 +19,31 @@ function App() {
             <Route path={ROUTE.LANDING} element={<Landing />} />
             <Route path={ROUTE.LOGIN} element={<Login />} />
             <Route path={ROUTE.SIGNUP} element={<Signup />} />
-            <Route path={ROUTE.HOME} element={<Home />} />
-            <Route path={ROUTE.DETAIL(":id")} element={<Detail />} />
-            <Route path={ROUTE.QUIZ} element={<Quiz />} />
+
+            <Route
+              path={ROUTE.HOME}
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={ROUTE.DETAIL(":id")}
+              element={
+                <ProtectedRoute>
+                  <Detail />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={ROUTE.QUIZ}
+              element={
+                <ProtectedRoute>
+                  <Quiz />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </AuthProvider>
       </BrowserRouter>
