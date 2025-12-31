@@ -22,6 +22,7 @@ const Login = () => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password);
+      localStorage.setItem("isLoggedIn", "true");
       navigate(ROUTE.HOME);
     } catch (err) {
       const error = err as AuthError;
