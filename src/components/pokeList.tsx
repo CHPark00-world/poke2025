@@ -9,6 +9,7 @@ interface PokeListProps {
 
 const PokeList = ({ pokemons }: PokeListProps) => {
   const [displayCount, setDisplayCount] = useState<number>(28);
+  const [loading, setLoading] = useState(false);
   const itemsPerPage = 28;
 
   const currentPokemons = pokemons.slice(0, displayCount);
@@ -20,15 +21,19 @@ const PokeList = ({ pokemons }: PokeListProps) => {
       const documentHeight = document.body.offsetHeight;
 
       if (scrollTop + windowHeight >= documentHeight - 100) {
-        if (displayCount < pokemons.length) {
-          setDisplayCount((prev) => prev + itemsPerPage);
+        if (!loading && displayCount < pokemons.length) {
+          setLoading(true);
+          setTimeout(() => {
+            setDisplayCount((prev) => prev + itemsPerPage);
+            setLoading(false);
+          }, 300);
         }
       }
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [displayCount, pokemons.length]);
+  }, [displayCount, pokemons.length, loading]);
 
   return (
     <div className="pokelist_container">
@@ -37,7 +42,15 @@ const PokeList = ({ pokemons }: PokeListProps) => {
           <PokeListItem key={item.url} pokemon={item} />
         ))}
       </div>
-      {displayCount < pokemons.length && (
+      {loading && (
+        <div
+          className="'loading"
+          style={{ textAlign: "center", padding: "20px" }}
+        >
+          로딩 중 ... ⏳
+        </div>
+      )}
+      {!loading && displayCount < pokemons.length && (
         <div
           className="loading"
           style={{ textAlign: "center", padding: "20px" }}

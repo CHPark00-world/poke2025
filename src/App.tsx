@@ -29,7 +29,7 @@ function App() {
               }
             />
             <Route
-              path={ROUTE.DETAIL(":id")}
+              path={ROUTE.DETAIL_PATH}
               element={
                 <ProtectedRoute>
                   <Detail />
