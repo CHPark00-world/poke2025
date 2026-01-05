@@ -6,7 +6,45 @@
   align-items: center;
 }
 
-.detail button {
+/* 뒤로가기 버튼만 */
+.detail .back_btn {
   position: relative;
   top: -20px;
+}
+
+/* wrapper - 하트 버튼 위치 기준 */
+.detail-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 600px; /* 카드 크기에 맞게 조정 */
+}
+
+/* 하트 버튼 - 카드 안쪽 우측 상단 */
+.detail-favorite-btn {
+  position: absolute;
+  top: -20px;
+  right: 100px; /* 카드 안쪽으로 */
+  width: 55px;
+  height: 55px;
+  font-size: 30px;
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.detail-favorite-btn:hover {
+  transform: scale(1.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  background: white;
+}
+
+.detail-favorite-btn:active {
+  transform: scale(1.1);
 }

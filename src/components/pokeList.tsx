@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./pokeList.css";
 import PokeListItem from "./pokeListItem.tsx";
 import { PokemonListItem } from "../types/pokemon";
@@ -8,19 +8,32 @@ interface PokeListProps {
 }
 
 const PokeList = ({ pokemons }: PokeListProps) => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [displayCount, setDisplayCount] = useState<number>(28);
+  const [loading, setLoading] = useState(false);
   const itemsPerPage = 28;
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentPokemons = pokemons.slice(startIndex, endIndex);
+  const currentPokemons = pokemons.slice(0, displayCount);
 
-  const totalPages = Math.ceil(pokemons.length / itemsPerPage);
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.body.offsetHeight;
 
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+      if (scrollTop + windowHeight >= documentHeight - 100) {
+        if (!loading && displayCount < pokemons.length) {
+          setLoading(true);
+          setTimeout(() => {
+            setDisplayCount((prev) => prev + itemsPerPage);
+            setLoading(false);
+          }, 300);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [displayCount, pokemons.length, loading]);
 
   return (
     <div className="pokelist_container">
@@ -29,36 +42,22 @@ const PokeList = ({ pokemons }: PokeListProps) => {
           <PokeListItem key={item.url} pokemon={item} />
         ))}
       </div>
-
-      <div className="pagination">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="pagination_btn"
+      {loading && (
+        <div
+          className="'loading"
+          style={{ textAlign: "center", padding: "20px" }}
         >
-          이전
-        </button>
-
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
-          <button
-            key={number}
-            onClick={() => handlePageChange(number)}
-            className={`pagination_number ${
-              currentPage === number ? "active" : ""
-            }`}
-          >
-            {number}
-          </button>
-        ))}
-
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="pagination_btn"
+          로딩 중 ... ⏳
+        </div>
+      )}
+      {!loading && displayCount < pokemons.length && (
+        <div
+          className="loading"
+          style={{ textAlign: "center", padding: "20px" }}
         >
-          다음
-        </button>
-      </div>
+          스크롤을 내리면 더 보기...
+        </div>
+      )}
     </div>
   );
 };
