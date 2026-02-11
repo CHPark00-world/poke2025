@@ -1,14 +1,20 @@
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContexts";
+import ROUTE from "../constants/route";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const { user, loading } = useAuth();
 
-  if (!isLoggedIn) {
-    return <Navigate to="/login" replace />;
+  if (loading) {
+    return <div className="loading">로딩 중 ...</div>;
+  }
+
+  if (!user) {
+    return <Navigate to={ROUTE.LOGIN} replace />;
   }
 
   return <>{children}</>;

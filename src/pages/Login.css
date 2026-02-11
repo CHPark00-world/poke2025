@@ -84,3 +84,10 @@ h2 {
   color: #333;
   text-decoration: underline;
 }
+
+.error_text {
+  color: #e74c3c;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
+}

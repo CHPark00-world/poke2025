@@ -1,10 +1,10 @@
-import { useRef } from "react";
 import "./header.css";
 import { useAuth } from "../contexts/AuthContexts";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import ROUTE from "../constants/route";
+import { useCallback, useRef } from "react";
 
 interface HeaderProps {
   onSearch: (value: string) => void;
@@ -12,17 +12,28 @@ interface HeaderProps {
 }
 
 const Header = ({ onSearch, onSort }: HeaderProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
   const navigate = useNavigate();
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const handleSearchChange = useCallback(
+    (value: string) => {
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
+      }
+      debounceTimeout.current = setTimeout(() => {
+        onSearch(value);
+      }, 300);
+    },
+    [onSearch],
+  );
 
   const handleLogout = async () => {
     try {
       await signOut(auth);
       navigate(ROUTE.LOGIN);
     } catch (error) {
-      console.log(error);
-      alert("로그아웃 실패");
+      console.error("로그아웃 에러: ", error);
     }
   };
 
@@ -34,13 +45,18 @@ const Header = ({ onSearch, onSort }: HeaderProps) => {
         alt="pokemon Logo"
       />
       <input
-        ref={inputRef}
         className="header_search"
         type="text"
         placeholder="포켓몬 검색..."
-        onChange={(e) => onSearch(e.target.value)}
+        onChange={(e) => handleSearchChange(e.target.value)}
+        aria-label="포켓몬 검색"
       />
-      <select className="header_sort" onChange={(e) => onSort(e.target.value)}>
+      <select
+        className="header_sort"
+        defaultValue="id"
+        onChange={(e) => onSort(e.target.value)}
+        aria-label="정렬 방식"
+      >
         <option value="id">번호순</option>
         <option value="name">이름순</option>
       </select>

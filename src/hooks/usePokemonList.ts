@@ -12,14 +12,14 @@ const usePokemonList = () => {
       setLoading(true);
 
       try {
-        const response = await fetch(`${base_url}/pokemon?limit=1025`);
+        const response = await fetch(`${base_url}/pokemon?limit=40`);
         const data = await response.json();
 
         const promises = data.results.map(async (pokemon: any) => {
           const id = pokemon.url.split("/")[6];
 
           const speciesResponse = await fetch(
-            `${base_url}/pokemon-species/${id}`
+            `${base_url}/pokemon-species/${id}`,
           );
           const speciesData = await speciesResponse.json();
           const koreanName = speciesData.names[2].name;
