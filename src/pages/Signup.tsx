@@ -4,11 +4,29 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import signupSchema, { SignupFormData } from "../schemas/signupSchema";
-import { createUserWithEmailAndPassword, AuthError } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  AuthError,
+} from "firebase/auth";
 import { auth } from "../firebase";
+import { useState } from "react";
+
+// 에러 메시지 상수화
+const AUTH_ERROR_MESSAGES = {
+  "auth/email-already-in-use": "이미 사용 중인 이메일입니다.",
+  "auth/weak-password": "비밀번호는 6글자 이상이어야 합니다.",
+  "auth/network-request-failed": "네트워크 연결에 실패하였습니다.",
+  "auth/invalid-email": "잘못된 이메일 형식입니다.",
+  "auth/internal-error": "잘못된 요청입니다.",
+} as const;
+
+type AuthErrorCode = keyof typeof AUTH_ERROR_MESSAGES;
 
 const Signup = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const {
     register,
@@ -19,109 +37,177 @@ const Signup = () => {
   });
 
   const onSubmit = async (data: SignupFormData) => {
+    setIsLoading(true);
+    setError(null);
+
     try {
-      await createUserWithEmailAndPassword(auth, data.email, data.password);
-      alert("회원가입 성공!");
-      navigate(ROUTE.LOGIN);
+      // 1. 사용자 계정 생성
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password,
+      );
+
+      // 2. 사용자 프로필에 username 저장
+      await updateProfile(userCredential.user, {
+        displayName: data.username,
+      });
+
+      // 3. 성공 후 로그인 페이지로 이동 (1.5초 후)
+      setError("회원가입 성공! 로그인 페이지로 이동합니다...");
+      setTimeout(() => {
+        navigate(ROUTE.LOGIN);
+      }, 1500);
     } catch (err) {
-      const error = err as AuthError;
-      switch (error.code) {
-        case "auth/email-already-in-use":
-          alert("이미 사용 중인 이메일입니다.");
-          break;
-        case "auth/weak-password":
-          alert("비밀번호는 6글자 이상이어야 합니다.");
-          break;
-        case "auth/network-request-failed":
-          alert("네트워크 연결에 실패 하였습니다.");
-          break;
-        case "auth/invalid-email":
-          alert("잘못된 이메일 형식입니다.");
-          break;
-        case "auth/internal-error":
-          alert("잘못된 요청입니다.");
-          break;
-        default:
-          alert("회원가입에 실패 하였습니다.");
-      }
+      const authError = err as AuthError;
+      console.error("Signup error:", authError);
+
+      const errorMessage =
+        AUTH_ERROR_MESSAGES[authError.code as AuthErrorCode] ||
+        `회원가입에 실패하였습니다. (${authError.code})`;
+
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <>
-      <div className="signup">
-        <form className="signup_form" onSubmit={handleSubmit(onSubmit)}>
-          <h2>Let's Sign Up! </h2>
-          <p className="subtitle">새로운 계정을 만들어보세요</p>
-          <div className="form_control">
-            <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              placeholder="이름을 입력해주세요."
-              {...register("username")}
-            />
-            {errors.username && (
-              <small style={{ visibility: "visible" }}>
-                {errors.username.message}
-              </small>
-            )}
+    <div className="signup">
+      <form className="signup_form" onSubmit={handleSubmit(onSubmit)}>
+        <h2>Let's Sign Up!</h2>
+        <p className="subtitle">새로운 계정을 만들어보세요</p>
+
+        {/* 전역 에러/성공 메시지 */}
+        {error && (
+          <div
+            className={
+              error.includes("성공") ? "success-message" : "error-message"
+            }
+            role="alert"
+            aria-live="polite"
+          >
+            {error}
           </div>
-          <div className="form_control">
-            <label htmlFor="email">Email</label>
+        )}
+
+        {/* Username 필드 */}
+        <div className="form_control">
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            autoComplete="username"
+            placeholder="이름을 입력해주세요."
+            disabled={isLoading}
+            {...register("username")}
+          />
+          <small
+            className={errors.username ? "error-visible" : "error-hidden"}
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {errors.username?.message || "\u00A0"}
+          </small>
+        </div>
+
+        {/* Email 필드 */}
+        <div className="form_control">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            autoComplete="email"
+            placeholder="이메일을 입력해주세요."
+            disabled={isLoading}
+            {...register("email")}
+          />
+          <small
+            className={errors.email ? "error-visible" : "error-hidden"}
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {errors.email?.message || "\u00A0"}
+          </small>
+        </div>
+
+        {/* Password 필드 */}
+        <div className="form_control">
+          <label htmlFor="password">Password</label>
+          <div className="password-input-wrapper">
             <input
-              type="text"
-              id="email"
-              placeholder="이메일을 입력해주세요."
-              {...register("email")}
-            />
-            {errors.email && (
-              <small style={{ visibility: "visible" }}>
-                {errors.email.message}
-              </small>
-            )}
-          </div>
-          <div className="form_control">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
               id="password"
+              autoComplete="new-password"
               placeholder="비밀번호를 입력해주세요."
+              disabled={isLoading}
               {...register("password")}
             />
-            {errors.password && (
-              <small style={{ visibility: "visible" }}>
-                {errors.password.message}
-              </small>
-            )}
           </div>
-          <div className="form_control">
-            <label htmlFor="password2">Confirm Password</label>
+          <small
+            className={errors.password ? "error-visible" : "error-hidden"}
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {errors.password?.message || "\u00A0"}
+          </small>
+        </div>
+
+        {/* Confirm Password 필드 */}
+        <div className="form_control">
+          <label htmlFor="password2">Confirm Password</label>
+          <div className="password-input-wrapper">
             <input
-              type="password"
               id="password2"
+              autoComplete="new-password"
               placeholder="비밀번호를 다시 입력해주세요."
+              disabled={isLoading}
               {...register("password2")}
             />
-            {errors.password2 && (
-              <small style={{ visibility: "visible" }}>
-                {errors.password2.message}
-              </small>
-            )}
           </div>
-          <button type="submit">회원가입하기</button>
-          <div className="terms">
-            <label>
-              <input type="checkbox" required />
-              <span>이용약관 및 개인정보처리방침에 동의합니다</span>
-            </label>
-          </div>
-          <p className="login_link">
-            이미 계정이 있으신가요? <Link to={ROUTE.LOGIN}>로그인</Link>
-          </p>
-        </form>
-      </div>
-    </>
+          <small
+            className={errors.password2 ? "error-visible" : "error-hidden"}
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {errors.password2?.message || "\u00A0"}
+          </small>
+        </div>
+
+        {/* 약관 동의 */}
+        <div className="terms">
+          <label>
+            <input
+              type="checkbox"
+              disabled={isLoading}
+              {...register("terms")}
+            />
+            <span>이용약관 및 개인정보처리방침에 동의합니다</span>
+          </label>
+          {errors.terms && (
+            <small className="error-visible" aria-live="polite">
+              {errors.terms.message}
+            </small>
+          )}
+        </div>
+
+        {/* 제출 버튼 */}
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <span className="spinner" aria-hidden="true" />
+              처리 중...
+            </>
+          ) : (
+            "회원가입하기"
+          )}
+        </button>
+
+        {/* 로그인 링크 */}
+        <p className="login_link">
+          이미 계정이 있으신가요? <Link to={ROUTE.LOGIN}>로그인</Link>
+        </p>
+      </form>
+    </div>
   );
 };
 

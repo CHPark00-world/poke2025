@@ -51,3 +51,69 @@
 .login_link a:hover {
   color: #333;
 }
+
+.success-message {
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 4px;
+  color: #155724;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* 에러 메시지 스타일 (기존 error-message와 함께 사용) */
+.error-message {
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  color: #721c24;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* 로딩 스피너 */
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 버튼 disabled 상태 개선 */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 비밀번호 토글 버튼 disabled 상태 */
+.password-toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 폼 컨트롤 애니메이션 개선 */
+.form_control small {
+  transition: opacity 0.2s ease-in-out;
+}
+
+.error-visible {
+  opacity: 1;
+}
+
+.error-hidden {
+  opacity: 0;
+}
