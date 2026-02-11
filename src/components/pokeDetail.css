@@ -1,4 +1,4 @@
-.pokecard {
+.pokemon_detail_card {
   display: flex;
   flex-direction: column;
   background-color: white;

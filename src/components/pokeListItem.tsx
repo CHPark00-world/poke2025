@@ -11,16 +11,28 @@ function PokeListItem({ pokemon }: PokeListItemProps) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    const id = pokemon.url.split("/")[6];
+    const urlParts = pokemon.url.split("/").filter(Boolean);
+    const id = urlParts[urlParts.length - 1];
     navigate(ROUTE.DETAIL(id));
   };
 
   return (
-    <div onClick={handleClick} className="pokelistitem">
+    <div
+      onClick={handleClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          handleClick();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      className="pokelistitem"
+    >
       <img
         src={pokemon.detailImage}
         alt={pokemon.koreanName}
-        style={{ width: "100px" }}
+        className="pokelistitem_image"
+        loading="lazy"
       />
       <h3>{pokemon.koreanName}</h3>
     </div>

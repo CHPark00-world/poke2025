@@ -1,4 +1,4 @@
-import PokeCard from "../components/pokeCard";
+import PokeCard from "../components/pokeDetail";
 import { useParams } from "react-router-dom";
 import usePokemon from "../hooks/usePokemon";
 import "./Detail.css";

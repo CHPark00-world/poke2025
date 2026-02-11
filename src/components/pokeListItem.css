@@ -6,7 +6,9 @@
   align-items: center;
   padding: 15px;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .pokelistitem:hover {
@@ -18,4 +20,10 @@
   object-fit: contain;
   max-height: 120px;
   flex: 1;
+}
+
+.pokelistitem_image {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
 }
