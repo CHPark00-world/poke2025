@@ -11,7 +11,6 @@ const ITEMS_PER_PAGE = 28;
 const INITIAL_DISPLAY_COUNT = 28;
 const SCROLL_THRESHOLD = 100;
 const LOADING_DELAY = 300;
-const THROTTLE_DELAY = 200;
 
 const PokeList = ({ pokemons }: PokeListProps) => {
   const [displayCount, setDisplayCount] = useState<number>(
@@ -19,25 +18,21 @@ const PokeList = ({ pokemons }: PokeListProps) => {
   );
   const [loading, setLoading] = useState(false);
   const isLoadingRef = useRef(false);
-  const lastCallTimeRef = useRef(0);
+  const sentinelRef = useRef<HTMLDivElement>(null);
   const currentPokemons = pokemons.slice(0, displayCount);
   const hasMore = displayCount < pokemons.length;
 
   useEffect(() => {
-    const handleScroll = () => {
-      const now = Date.now();
-      if (now - lastCallTimeRef.current < THROTTLE_DELAY) {
-        return;
-      }
-      lastCallTimeRef.current = now;
+    setDisplayCount(ITEMS_PER_PAGE);
+  }, [pokemons]);
 
-      if (isLoadingRef.current) return;
-      const scrollTop = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.body.offsetHeight;
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          if (isLoadingRef.current) return;
+          if (!hasMore) return;
 
-      if (scrollTop + windowHeight >= documentHeight - SCROLL_THRESHOLD) {
-        if (hasMore) {
           isLoadingRef.current = true;
           setLoading(true);
 
@@ -47,16 +42,21 @@ const PokeList = ({ pokemons }: PokeListProps) => {
             isLoadingRef.current = false;
           }, LOADING_DELAY);
         }
-      }
+      },
+      {
+        root: null,
+        rootMargin: `${SCROLL_THRESHOLD}px`,
+        threshold: 0,
+      },
+    );
+    const sentinel = sentinelRef.current;
+    if (sentinel) {
+      observer.observe(sentinel);
+    }
+    return () => {
+      observer.disconnect();
     };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
   }, [hasMore]);
-
-  useEffect(() => {
-    setDisplayCount(ITEMS_PER_PAGE);
-  }, [pokemons]);
 
   return (
     <div className="pokelist_container">
@@ -66,6 +66,7 @@ const PokeList = ({ pokemons }: PokeListProps) => {
           return <PokeListItem key={id} pokemon={item} />;
         })}
       </div>
+      {hasMore && <div ref={sentinelRef} className="sentinel"></div>}
       {loading && <div className="loading_message">로딩 중 ... ⏳</div>}
       {!loading && displayCount < pokemons.length && (
         <div className="scroll_hint">스크롤을 내리면 더 보기...</div>

@@ -1,12 +1,8 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContexts";
 import ROUTE from "../constants/route";
 
-interface ProtectedRouteProps {
-  children: React.ReactNode;
-}
-
-export function ProtectedRoute({ children }: ProtectedRouteProps) {
+export function ProtectedRoute() {
   const { user, loading } = useAuth();
 
   if (loading) {
@@ -17,5 +13,5 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     return <Navigate to={ROUTE.LOGIN} replace />;
   }
 
-  return <>{children}</>;
+  return <Outlet />;
 }

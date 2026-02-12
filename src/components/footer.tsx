@@ -13,6 +13,7 @@ const Footer = () => {
             href="https://github.com/CHPark00-world/poke2025"
             target="_blank"
             rel="noopener noreferrer"
+            className="a_text"
           >
             박찬혁
           </a>

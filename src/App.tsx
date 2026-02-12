@@ -9,45 +9,25 @@ import Detail from "./pages/Detail";
 import { AuthProvider } from "./contexts/AuthContexts";
 import Quiz from "./pages/Quiz";
 import { ProtectedRoute } from "./router/ProtectedRoute";
+import Notfound from "./pages/NotFound";
 
 function App() {
   return (
-    <>
-      <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            <Route path={ROUTE.LANDING} element={<Landing />} />
-            <Route path={ROUTE.LOGIN} element={<Login />} />
-            <Route path={ROUTE.SIGNUP} element={<Signup />} />
-
-            <Route
-              path={ROUTE.HOME}
-              element={
-                <ProtectedRoute>
-                  <Home />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path={ROUTE.DETAIL_PATH}
-              element={
-                <ProtectedRoute>
-                  <Detail />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path={ROUTE.QUIZ}
-              element={
-                <ProtectedRoute>
-                  <Quiz />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </AuthProvider>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path={ROUTE.LANDING} element={<Landing />} />
+          <Route path={ROUTE.LOGIN} element={<Login />} />
+          <Route path={ROUTE.SIGNUP} element={<Signup />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path={ROUTE.HOME} element={<Home />} />
+            <Route path={ROUTE.DETAIL_PATH} element={<Detail />} />
+            <Route path={ROUTE.QUIZ} element={<Quiz />} />
+          </Route>
+          <Route path="*" element={<Notfound />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 

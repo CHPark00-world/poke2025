@@ -75,3 +75,8 @@
   text-align: center;
   padding: 20px;
 }
+
+.sentinel {
+  height: 1px;
+  background: transparent;
+}
