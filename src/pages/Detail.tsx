@@ -5,10 +5,37 @@ import "./Detail.css";
 
 const Detail = () => {
   const { id } = useParams<{ id: string }>();
-  const pokemon = usePokemon(Number(id));
+  const { pokemon, loading, error } = usePokemon(Number(id));
 
-  if (!pokemon) return <div>로딩중 ...</div>;
+  // 로딩 중
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <p>로딩 중...</p>
+      </div>
+    );
+  }
 
+  // 에러 발생
+  if (error) {
+    return (
+      <div className="error-container">
+        <h2>오류가 발생했습니다</h2>
+        <p>{error.message}</p>
+      </div>
+    );
+  }
+
+  // 데이터 없음
+  if (!pokemon) {
+    return (
+      <div className="no-data-container">
+        <p>포켓몬 정보를 찾을 수 없습니다.</p>
+      </div>
+    );
+  }
+
+  // 정상 렌더링
   return (
     <div className="detail">
       <PokeCard pokemon={pokemon} />

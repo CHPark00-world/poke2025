@@ -12,7 +12,7 @@ const usePokemonList = () => {
       setLoading(true);
 
       try {
-        const response = await fetch(`${base_url}/pokemon?limit=40`);
+        const response = await fetch(`${base_url}/pokemon?limit=151`);
         const data = await response.json();
 
         const promises = data.results.map(async (pokemon: any) => {
