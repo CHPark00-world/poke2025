@@ -11,7 +11,8 @@ const Detail = () => {
   if (loading) {
     return (
       <div className="loading-container">
-        <p>로딩 중...</p>
+        <div className="spinner" />
+        <p>포켓몬 정보를 불러오는 중...</p>
       </div>
     );
   }
